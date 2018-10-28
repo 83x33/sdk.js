@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript" src="/index.umd.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      sdk33.setOptions({
+          appUrl: 'http://localhost:4001'
+        , apis: { 
+              mainnet: 'http://localhost:4002'
+            , testnet: 'http://localhost:4003'
+          }
+      })
+    </script>
+
+    <!-- <script type="text/javascript">
+      var widget = sdk33.widget({ id: 'V1LSOwCOXH', network: 'testnet' }, status => {
+        console.log('new invoice status:', status)
+      })
+    </script>
+    <a onclick="widget.show()" href="javascript:">
+      Click to Pay
+    </a> -->
+
+    <script type="text/javascript">
+      function payWithBitcoin(amount){
+        sdk33.payNewInvoice({ 
+            wid: 'yl_MF6WTu'
+          , amount
+          , network: 'testnet' 
+        }, status => {
+          console.log('new status:', status)
+        })
+      }
+    </script>
+
+    <a onclick="payWithBitcoin('20-usd')" href="javascript:">
+      Buy T-Shirt
+    </a>
+    <br/>
+    <a onclick="payWithBitcoin('350-mbtc')" href="javascript:">
+      Buy Stickers
+    </a>
+
+  </body>
+</html>

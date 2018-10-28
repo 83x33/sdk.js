@@ -1,0 +1,24 @@
+{
+  "name": "sdk33",
+  "version": "1.0.0",
+  "description": "8333.io javascript software development kit.",
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "    microbundle --name sdk33 --format cjs,umd --sourcemap false --external all",
+    "dev": "microbundle watch --name sdk33 --format cjs,umd --sourcemap false --external all --compress false",
+    "serv": "npx serv dist/",
+    "prepublish": "npm run build"
+  },
+  "files": [
+    "index.js",
+    "dist/index.js",
+    "dist/index.umd.js"
+  ],
+  "devDependencies": {
+    "microbundle": "^0.7.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
