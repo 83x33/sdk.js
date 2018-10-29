@@ -3,6 +3,7 @@ import axios from 'axios/dist/axios.min.js'
 
 const SDK = {}
 const Clients = {}
+const Widgets = {}
 export default SDK
 
 SDK.options = { 
@@ -62,6 +63,8 @@ SDK.payNewInvoice = (invoice, options, cb = (status, widget)=>{}) => {
 }
 
 
+SDK.widgets = () => Widgets
+
 SDK.widget = (invoice, {
     preloadIframe = true
   , network = 'mainnet'
@@ -77,44 +80,22 @@ SDK.widget = (invoice, {
   const { appUrl, apis } = SDK.options
   const apiUrl = apis[network]
   const invoiceUrl = appUrl + '/invoice/' + invoice.id + '?'+['network='+network, 'theme='+theme, 'framed=true'].join('&')
-  
+
   const frame = {
       inited: false
-    , id: 'ettt-'+((new Date%100))
+    , containerId: 'sdk33-'+invoice.id
+    , id: invoice.id+'-frame' //+((new Date%100))
     , events: {}
   }
 
   const dom = {  
     body: document.getElementsByTagName('body')[0],
+    container: document.getElementById(frame.containerId),
     frame: document.getElementById(frame.id),
-    css: document.createElement('style')
+    css: document.getElementById('sdk33-css')
   }
 
-  // set css
-  let css = ''
-  css += '.ettt_overlay {'
-  css += 'transition:320ms opacity ease;transition:320ms opacity ease;'
-  css += '-webkit-transition:320ms opacity ease;transition:320ms opacity ease;'
-  css += 'display: none;'
-  css += 'overflow-y: scroll;'
-  css += '-webkit-overflow-scrolling: touch;'
-  css += 'position: fixed;'
-  css += 'top: 0px;' 
-  css += 'left: 0px;'
-  css += 'right: 0px;' 
-  css += 'bottom: 0px;'
-  css += 'background-color: rgba(0, 0, 0, 0.8);' 
-  css += 'z-index: 9999;'
-  css += '}'
-  css += '.ettt_iframe {'
-  css += 'min-height: 100%;'
-  css += 'height: 100%;'
-  css += 'width: 100%;'
-  css += '}'
-  dom.css.innerHTML = css
-  dom.body.appendChild(dom.css)
-
-
+  // iframe postMessage event handler
   const eventHandler = function(e){
     const data = e.data
     if(data == 'close') return frame.close()
@@ -135,13 +116,35 @@ SDK.widget = (invoice, {
     if(!frame.inited) addListener(eventHandler)
     frame.inited = true
 
-    // remove old frame
-    if(dom.frame) dom.frame.parentNode.removeChild(dom.frame)
+    // TODO implement destroy() widget
+    // write logic for cleaning/resetting widget dom 
+    // if(dom.frame) dom.frame.parentNode.removeChild(dom.frame)
+
+    // css
+    if(!dom.css){
+      dom.css = document.createElement('style')
+      let css = ''
+      css += '.sdk33-overlay {'
+      css += 'transition:320ms opacity ease;transition:320ms opacity ease;'
+      css += '-webkit-transition:320ms opacity ease;transition:320ms opacity ease;'
+      css += 'display: none;position: fixed;'
+      css += 'overflow-y: scroll;-webkit-overflow-scrolling: touch;'
+      css += 'top: 0px;left: 0px;right: 0px;bottom: 0px;'
+      css += 'background-color: rgba(0, 0, 0, 0.8);' 
+      css += 'z-index: 9999;'
+      css += '}'
+      css += '.sdk33-frame {'
+      css += 'min-height: 100%;height: 100%;'
+      css += 'width: 100%;'
+      css += '}'
+      dom.css.innerHTML = css
+      dom.body.appendChild(dom.css)
+    } 
 
     // iframe
     dom.frame = document.createElement('iframe')
-    dom.frame.className = 'ettt_iframe'
     dom.frame.id = frame.id
+    dom.frame.className = 'sdk33-frame'
     dom.frame.src = invoiceUrl
     dom.frame.setAttribute('frameborder', '0')
     dom.frame.setAttribute('allowtransparency', 'true')
@@ -149,11 +152,15 @@ SDK.widget = (invoice, {
 
     // overlay
     dom.overlay = document.createElement('div')
-    dom.overlay.className = 'ettt_overlay'
+    dom.overlay.id = frame.containerId
+    dom.overlay.className = 'sdk33-overlay'
     dom.overlay.appendChild(dom.frame)
     
+    // apend widget to page
     dom.body.appendChild(dom.overlay)
 
+    // reference widget instance to glabal SDK widgets list
+    Widgets[frame.containerId] = frame
     return frame
   }
 
