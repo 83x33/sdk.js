@@ -37,7 +37,7 @@ SDK.createInvoice = (invoice, network) => {
       .then(res => solve(res.data))
       .catch(e => ject(e.message || e))
   )
-}
+} 
 
 // Create a widget from an invoice ID
 // syncronous function

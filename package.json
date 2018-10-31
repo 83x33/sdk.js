@@ -1,25 +1,18 @@
 {
   "name": "sdk33",
-  "version": "1.0.0",
-  "description": "8333.io javascript software development kit.",
+  "version": "1.0.2",
+  "description": "8333.io node/browser SDK",
   "source": "src/index.js",
-  "main": "dist/index.js",
+  "main": "index.js",
+  "unpkg": "dist/sdk.umd.js",
   "scripts": {
     "build": "rollup -c",
-    "dev": "microbundle watch --name sdk33 --format cjs,umd --sourcemap false --external all --compress false",
-    "serve": "npm run build && npx serv",
+    "watch": "rollup -c --watch",
+    "start": "npm run build && npx serv",
     "prepublish": "npm run build"
   },
-  "files": [
-    "index.js",
-    "dist/index.js",
-    "dist/index.umd.js"
-  ],
   "devDependencies": {
-    "microbundle": "^0.7.0",
-    "rollup-plugin-butternut": "^0.1.0",
-    "rollup-plugin-terser": "^3.0.0",
-    "rollup-plugin-uglify": "^6.0.0"
+    "rollup-plugin-terser": "^3.0.0"
   },
   "dependencies": {
     "axios": "^0.18.0",

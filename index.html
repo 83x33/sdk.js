@@ -16,6 +16,7 @@
       })
     </script>
 
+
     <!-- <script type="text/javascript">
       var widget = sdk33.widget({ id: 'V1LSOwCOXH', network: 'testnet' }, status => {
         console.log('new invoice status:', status)
@@ -27,12 +28,8 @@
 
     <script type="text/javascript">
       sdk33.chain()
-        .on('tip', tx => {
-          console.log('tip', tx)
-        })
-        .on('block', tx => {
-          console.log('tx', tx)
-        })
+        .on('tip', console.log)
+        .on('block', console.log)
         .emit('tip')
     </script>
 

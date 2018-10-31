@@ -1,10 +1,37 @@
-# sdk.js
+# sdk33
 
-## Install
+NodeJs/Browser compatible SDK for the 8333.io platform.
 
-Include the SDK to your page:
+## Install with node
+
+```js
+// install
+npm install sdk33 --save
+
+// import
+import sdk33 from 'sdk33'
+```
+
+## Install Web
+
+Include the SDK dependencies:
 ```html
-<script type="text/javascript" src="https://www.8333.io/sdk.js"></script>
+<script type="text/javascript" src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/socket.io-client@2.1.1/dist/socket.io.js"></script>
+```
+
+Include the SDK:
+```html
+<script type="text/javascript" src="https://unpkg.com/sdk33"></script>
+```
+
+## chain(network=mainnet)
+
+```js
+sdk33.chain()
+  .on('tip', console.log)
+  .on('block', console.log)
+  .emit('tip')
 ```
 
 ## payInvoice()
