@@ -1,4 +1,5 @@
-import axios from 'axios/dist/axios.min.js'
+import axios from 'axios'
+import io from 'socket.io-client'
 
 
 const SDK = {}
@@ -14,21 +15,27 @@ SDK.options = {
     }
 }
 
+SDK.apiUrl = (network = 'mainnet') => SDK.options.apis[network]
+
 SDK.client = (network = 'mainnet') => {
   Clients[network] = Clients[network] || axios.create({
-      baseURL: SDK.options.apis[network]
+      baseURL: SDK.apiUrl(network)
   })
   return Clients[network]
+}
+
+SDK.chain = (network = 'mainnet') => {
+  return io(`${SDK.apiUrl(network)}/${network}`, { transports: ['websocket'] })
 }
 
 SDK.setOptions = (options) => (SDK.options = { ...SDK.options, ...options })
 
 
 SDK.createInvoice = (invoice, network) => {
-  return new Promise((resolve, reject) => 
+  return new Promise((solve, ject) => 
     SDK.client(invoice.network || network).post('/invoices', invoice)
-      .then(res => resolve(res.data))
-      .catch(e => reject(e.response && e.response.data && e.response.data.error) || e.message || e)
+      .then(res => solve(res.data))
+      .catch(e => ject(e.message || e))
   )
 }
 

@@ -1,7 +1,9 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script type="text/javascript" src="/index.umd.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/socket.io-client@2.1.1/dist/socket.io.js"></script>
+    <script type="text/javascript" src="/dist/sdk.umd.js"></script>
   </head>
   <body>
     <script type="text/javascript">
@@ -22,6 +24,17 @@
     <a onclick="widget.show()" href="javascript:">
       Click to Pay
     </a> -->
+
+    <script type="text/javascript">
+      sdk33.chain()
+        .on('tip', tx => {
+          console.log('tip', tx)
+        })
+        .on('block', tx => {
+          console.log('tx', tx)
+        })
+        .emit('tip')
+    </script>
 
     <script type="text/javascript">
       function payWithBitcoin(amount){

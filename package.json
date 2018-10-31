@@ -5,9 +5,9 @@
   "source": "src/index.js",
   "main": "dist/index.js",
   "scripts": {
-    "build": "    microbundle --name sdk33 --format cjs,umd --sourcemap false --external all",
+    "build": "rollup -c",
     "dev": "microbundle watch --name sdk33 --format cjs,umd --sourcemap false --external all --compress false",
-    "serve": "npm run build && npx serv dist/",
+    "serve": "npm run build && npx serv",
     "prepublish": "npm run build"
   },
   "files": [
@@ -16,9 +16,13 @@
     "dist/index.umd.js"
   ],
   "devDependencies": {
-    "microbundle": "^0.7.0"
+    "microbundle": "^0.7.0",
+    "rollup-plugin-butternut": "^0.1.0",
+    "rollup-plugin-terser": "^3.0.0",
+    "rollup-plugin-uglify": "^6.0.0"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "socket.io-client": "^2.1.1"
   }
 }
